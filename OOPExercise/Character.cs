@@ -53,16 +53,28 @@ namespace OOPExercise
 
         public void TakeDamage(int damage)
         {
-            if (CurrentHealth - damage < 0)
+            if (CurrentHealth == 0)
+            {
+                Console.WriteLine("Health is zero");
+                return;
+            }
+
+            if (CurrentHealth - damage <= 0)
             {
                 CurrentHealth = 0;
-                // trigger a death
+                OnDeath();
             }
             else
             {
                 CurrentHealth -= damage;
                 HitReact();
             }
+        }
+
+        public void OnDeath()
+        {
+            // put death code here
+            Console.WriteLine(Name + " has Died");
         }
 
         public virtual void HitReact()

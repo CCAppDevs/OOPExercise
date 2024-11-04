@@ -15,13 +15,35 @@
 
             Console.WriteLine("Pos X,Y" + myCharacter.PosX + "," + myCharacter.PosY);
 
-            for (int i = 0; i < 10; i++)
-            {
-                myCharacter.TakeDamage(1);
-            }
-
             Enemy goblin = new Enemy("Gobbo", 10, 1);
             Enemy troll = new Enemy("Trolli", 100, 3);
+
+            while (DoCombatRound(myCharacter, troll))
+            {
+                Console.WriteLine("running the combat");
+            }
+
+            
+        }
+
+        static bool DoCombatRound(Character attacker, Character defender)
+        {
+            if (attacker.CurrentHealth <= 0)
+            {
+                // attacker is dead
+                return false;
+            }
+
+            if (defender.CurrentHealth <= 0)
+            {
+                // defender is dead
+                return false;
+            }
+
+            defender.TakeDamage(attacker.AttackPower);
+            attacker.TakeDamage(defender.AttackPower);
+
+            return true;
         }
     }
 }
