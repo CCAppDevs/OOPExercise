@@ -74,12 +74,17 @@ namespace OOPExercise
         public void OnDeath()
         {
             // put death code here
-            Console.WriteLine(Name + " has Died");
+            Console.WriteLine(Name + " is slain!");
         }
 
         public virtual void HitReact()
         {
             Console.WriteLine(Name + ": OOF!");
+        }
+
+        public bool IsAlive()
+        {
+            return CurrentHealth > 0;
         }
     }
 }
