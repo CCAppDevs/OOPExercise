@@ -12,7 +12,7 @@ namespace OOPExercise
         private bool isPlaying;
 
         private Player player;
-        private Enemy goblin;
+        private Enemy enemy;
 
         // things it can do
         public Game()
@@ -20,7 +20,7 @@ namespace OOPExercise
             // set things it knows to a default
             isPlaying = false;
             player = new Player("Player1", 100);
-            goblin = new Enemy("Goblin", 10, 1);
+            enemy = new Enemy("Troll", 1000, 1);
         }
 
         // Action: startGame
@@ -40,10 +40,51 @@ namespace OOPExercise
 
         public void Update()
         {
-            Console.WriteLine("The goblin sneers at you!");
-            Console.WriteLine("The goblin takes a wild swing!");
-            player.TakeDamage(goblin.AttackPower);
-          
+            Console.Clear();
+            PrintMenu();
+            PrintHUD();
+
+            // make a decision on what to do
+            int answer = -1;
+
+            Console.Write("What would you like to do? ");
+            answer = Convert.ToInt32(Console.ReadLine());
+
+            switch (answer)
+            {
+                case 0:
+                    Console.WriteLine("Exiting");
+                    StopGame();
+                    break;
+                case 1:
+                    DoCombat();
+                    break;
+                case 2:
+                    // run here
+                    Console.WriteLine("You attempt to run but are stopped.");
+                    DoCombat();
+                    break;
+                default:
+                    Console.WriteLine("Invalid Option. Please Try Again.");
+                    break;
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadLine();
+        }
+
+        private void DoCombat()
+        {
+            Console.WriteLine($"The {enemy.Name} sneers at you!");
+            Console.WriteLine($"The {enemy.Name} takes a wild swing!");
+            player.TakeDamage(enemy.AttackPower);
+
+            if (player.IsAlive())
+            {
+                Console.WriteLine($"You swing back at the {enemy.Name}.");
+                enemy.TakeDamage(player.AttackPower);
+            }
+
 
             // check for game end
             if (!player.IsAlive())
@@ -52,12 +93,9 @@ namespace OOPExercise
                 StopGame();
             }
 
-            Console.WriteLine("You swing back at the goblin.");
-            goblin.TakeDamage(player.AttackPower);
-
-            if (!goblin.IsAlive())
+            if (!enemy.IsAlive())
             {
-                Console.WriteLine("The goblin is slain!");
+                Console.WriteLine($"The {enemy.Name} is slain!");
                 StopGame();
             }
         }
@@ -70,5 +108,22 @@ namespace OOPExercise
             }
         }
 
+        private void PrintMenu()
+        {
+            Console.WriteLine("------------------------------");
+            Console.WriteLine("Combat Menu");
+            Console.WriteLine("------------------------------");
+            Console.WriteLine("1. Attack");
+            Console.WriteLine("2. Run");
+            Console.WriteLine("0. Exit Game");
+            Console.WriteLine();
+        }
+
+        private void PrintHUD()
+        {
+            Console.WriteLine("------------------------------");
+            Console.WriteLine($"Health: {player.CurrentHealth}/{player.MaxHealth}");
+            Console.WriteLine("------------------------------");
+        }
     }
 }

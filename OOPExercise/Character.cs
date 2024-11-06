@@ -22,7 +22,16 @@ namespace OOPExercise
 
         public int AttackPower
         {
-            get { return _BaseDamage * Strength; }
+            get 
+            {
+                // get a random number generator
+                // calculate a random number in a range
+                var rand = new Random();
+
+                double multiplier = rand.NextDouble();
+
+                return (int) (_BaseDamage * Strength * multiplier); 
+            }
         }
 
         public Character(string name, int health)
